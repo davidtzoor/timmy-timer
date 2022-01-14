@@ -1,0 +1,15 @@
+config:
+    target: "http://localhost:8080"
+    phases:
+        - duration: 10
+          arrivalRate: 1000
+
+scenarios:
+    - flow:
+        - post:
+            url: "/timers"
+            json:
+                hours: "0"
+                minutes: "0"
+                seconds: "1"
+                url: "localhost:3000"
