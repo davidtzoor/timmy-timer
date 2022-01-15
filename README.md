@@ -1,6 +1,10 @@
 # timmy-timer
 A lightweight app for scheduling timers with a callback
 
+## Assumptions
+* The app is currently running on a single nodejs instance + single Sqlite instance.
+* The app can be scaled up by deploying multiple instances of the app, and replacing the DB layer to a more performant one.
+
 ## Installation
 * Clone the repository
 * Run `npm install` in the project's root directory.
