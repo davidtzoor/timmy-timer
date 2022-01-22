@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - "mysql"
+      - "redis"
+    environment:
+      - DB_HOST=mysql
+      - REDIS_URL=redis://timers-queue
+
+  mysql:
+    image: mysql:latest
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: timmy
+
+  redis:
+    image: redis:latest
+    container_name: timers-queue
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mysql-data:
+  redis-data:
