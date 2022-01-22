@@ -1,16 +1,20 @@
 # timmy-timer
 A lightweight app for scheduling timers with a callback
 
-## Assumptions
-* The app is currently running on a single nodejs instance + single Sqlite instance.
-* The app can be scaled up by deploying multiple instances of the app, and replacing the DB layer to a more performant one.
-
-## Installation
+## Local installation
 * Clone the repository
 * Run `npm install` in the project's root directory.
+* You need to install the mysql and redis (on macos, recommended to use brew)
+* Run `npm run serve` to start the server using `nodemon`.
 
-## Running the server
-* Run `npm run start`
+## Deployment with Docker
+The full app with dependecies can be deployed using Docker and Docker Compose:
+* Download docker (https://www.docker.com/products/docker-desktop)
+* Clone the repository.
+* Run `docker-compose up -d` - this will do the following:
+  * Build the app and create an image.
+  * Spawn three containers - app (nodejs), mysql and redis.
+* The app will be available on `localhost:3000` (default port; can be cahnged in the `.env` file).
 
 ## APIs
 ### ```POST /timers```
@@ -41,10 +45,12 @@ Returns the remaining seconds of the given timer `id`:
 ## Stack
 * NodeJS - backend runtime env
 * ExpressJS - web application framework
-* Sqlite3 - DB
+* MySQL - persisting timers.
+* Redis - queue management
 
-## DB Persisting
-The app is using **sqlite3** as the persistence layer for the following reasons:
-* Doesn't require additional installation on the running machine (macos).
-* Very fast and performant - using indices and no need for joins.
-* Uses standard SQL - can be easily replaces by a more performant RDBMS DB if needed (MySQL, PostgreSQL).
+## DB Persisting and Queue Management
+* The app is using **MySQL** as the persistence layer. All created timers will be saved to the `timmy.timer` table.
+* Queue management is done using redis:
+  * Using a `ZSET` (sorted set) to add newly created timers, sorted by the future execution time.
+  * A worker is querying the queue every x milliseconds (defined by the `QUEUE_PROCESS_EVERY_MS` env variable).
+  * If there are jobs to be executed, they will be removed from the queue and processed.
