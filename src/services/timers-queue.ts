@@ -58,7 +58,7 @@ export class TimersQueue {
         );
         await axios.post(`${timer.url}/${timer.id}`);
       } catch (error) {
-        console.error(`☠️ Failed to fire webook ${timer.url}/${timer.id}`, error);
+        console.error(`☠️ Failed to fire webook ${timer.url}/${timer.id}`);
       }
     });
     await Promise.all(readyJobs);
