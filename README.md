@@ -14,7 +14,7 @@ The full app with dependecies can be deployed using Docker and Docker Compose:
 * Run `docker-compose up -d` - this will do the following:
   * Build the app and create an image.
   * Spawn three containers - app (nodejs), mysql and redis.
-* The app will be available on `localhost:3000` (default port; can be cahnged in the `.env` file).
+* The app will be available on `localhost:3000` (default port; can be changed in the `.env` file).
 
 ## APIs
 ### ```POST /timers```
