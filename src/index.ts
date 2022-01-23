@@ -2,7 +2,6 @@ import express, { Express, Request, Response } from "express";
 import { createConnection } from "typeorm";
 import helmet from "helmet";
 
-// import { processPendingTimers, schedule } from "./services/timers";
 import { TimersQueue } from "./services/timers-queue";
 import appConfig from "./configs";
 import timersRoutes from "./api/timers";
